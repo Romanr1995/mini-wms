@@ -5,8 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Table(name = "STOCK_ENTITY")
+@Getter
+@Setter
+@NoArgsConstructor
 public class StockEntity {
 
     @Id
@@ -20,5 +28,4 @@ public class StockEntity {
     private BigDecimal stockCnt;
 
     private BigDecimal targetCnt;
-
 }
