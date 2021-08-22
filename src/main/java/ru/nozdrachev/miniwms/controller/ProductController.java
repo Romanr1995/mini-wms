@@ -12,31 +12,24 @@ import java.util.Map;
 @RestController
 public class ProductController {
 
-   private Map<String,BigDecimal> productLefts = new HashMap<>();
-   private Map<String,BigDecimal> target = new HashMap<>();
 
     @PostMapping("/income")
-    public void income(@RequestBody String productName,@RequestBody BigDecimal productCount) {
-            productLefts.put(productName,productCount);
+    public void income(@RequestBody Map<String,BigDecimal> product) {
+        System.out.println(product);
     }
 
-//    @PostMapping("/outcome")
-//    public void outcome((@RequestBody Map<String,BigDecimal> product) {
-//        productLefts.remove(product);
-//    }
+    @PostMapping("/outcome")
+    public void outcome(@RequestBody Map<String,BigDecimal> product) {
 
-    @PostMapping("/srtTarget")
-    public void target(@RequestBody String productName,@RequestBody BigDecimal productCount) {
-        target.put(productName,productCount);
     }
 
-//    @GetMapping("/calcShortage")
-//    public Map<String,BigDecimal> shortage() {
-//        Map<String,BigDecimal> calc = new HashMap<>();
-//
-//        for (Map<String,BigDecimal> c: calc) {
-//
-//        }
-//
-//    }
+    @PostMapping("/setTarget")
+    public void target(@RequestBody Map<String,BigDecimal> product) {
+
+    }
+
+    @GetMapping("/calcShortage")
+    public Map<String,BigDecimal> shortage() {
+        return Map.of("apple",BigDecimal.valueOf(10),"banana",BigDecimal.valueOf(15));
+    }
 }
