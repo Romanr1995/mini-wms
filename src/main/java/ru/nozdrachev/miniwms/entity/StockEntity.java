@@ -28,4 +28,5 @@ public class StockEntity {
     private BigDecimal stockCnt;
 
     private BigDecimal targetCnt;
+
 }
