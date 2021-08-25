@@ -35,7 +35,7 @@ public class HelloController {
                 .setTargetCnt(BigDecimal.valueOf(20))
         );
 
-        StockEntity apple = stockRepo.findByName("apple").orElseThrow();
+//        StockEntity apple = stockRepo.findByName("apple").orElseThrow();
 
         return "Hello,world";
     }

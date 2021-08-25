@@ -16,24 +16,27 @@ import java.util.Optional;
 @Component
 public class IncomeProduct implements IncomeService{
 
-    @PersistenceContext
-    EntityManager em;
-
     @Autowired
     StockRepo stockRepo;
 
+    public IncomeProduct(StockRepo stockRepo) {
+        this.stockRepo = stockRepo;
+    }
 
     @Transactional
     @Override
     public void doIncome(Map<String, BigDecimal> in){
 
-        for(Map.Entry e: in.entrySet()) {
-            String key =(String) e.getKey();
-            BigDecimal value = (BigDecimal) e.getValue();
+        for(Map.Entry<String,BigDecimal> e: in.entrySet()) {
+            String key = e.getKey();
+            BigDecimal value = e.getValue();
 
-            StockEntity stockEntity = stockRepo.findByName(key).orElseThrow();
+                StockEntity stockEntity = stockRepo.findByName(key);
+                if (stockEntity == null) {
+                    throw new RuntimeException("Значение не найдено");
+                }
+                stockRepo.save(stockEntity.setStockCnt(stockEntity.getStockCnt().add(value)));
 
-            stockEntity.setStockCnt(stockEntity.getStockCnt().add(value));
         }
     }
 }

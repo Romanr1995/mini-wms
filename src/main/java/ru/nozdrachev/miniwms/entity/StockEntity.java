@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -29,4 +30,10 @@ public class StockEntity {
 
     private BigDecimal targetCnt;
 
+    @ConstructorProperties({"name","stockCnt","targetCnt"})
+    public StockEntity(String name, BigDecimal stockCnt, BigDecimal targetCnt) {
+        this.name = name;
+        this.stockCnt = stockCnt;
+        this.targetCnt = targetCnt;
+    }
 }

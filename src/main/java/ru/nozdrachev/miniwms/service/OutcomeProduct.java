@@ -14,28 +14,31 @@ import java.util.Map;
 @Component
 public class OutcomeProduct implements OutcomeService {
 
-    @PersistenceContext
-    EntityManager em;
-
     @Autowired
     StockRepo stockRepo;
+
+    public OutcomeProduct(StockRepo stockRepo) {
+        this.stockRepo = stockRepo;
+    }
 
     @Transactional
     @Override
     public void doOutcome(Map<String, BigDecimal> out) {
 
-        for (Map.Entry e : out.entrySet()) {
+        for (Map.Entry<String,BigDecimal> e : out.entrySet()) {
 
-            String key = (String) e.getKey();
-            BigDecimal value = (BigDecimal) e.getValue();
+            String key = e.getKey();
+            BigDecimal value = e.getValue();
 
-            StockEntity stockEntity = stockRepo.findByName(key).orElseThrow();
+            StockEntity stockEntity = stockRepo.findByName(key);
+
 
            if (value.compareTo(stockEntity.getStockCnt()) <= 0) {
-               stockEntity.setStockCnt(stockEntity.getStockCnt().subtract(value));
+               stockRepo.save(stockEntity.setStockCnt(stockEntity.getStockCnt().subtract(value)));
            } else {
                stockRepo.delete(stockEntity);
            }
+
         }
     }
 }
