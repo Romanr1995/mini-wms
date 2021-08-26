@@ -1,15 +1,11 @@
 package ru.nozdrachev.miniwms.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.beans.ConstructorProperties;
-import java.math.BigDecimal;
-import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "STOCK_ENTITY")
@@ -30,10 +26,12 @@ public class StockEntity {
 
     private BigDecimal targetCnt;
 
-    @ConstructorProperties({"name","stockCnt","targetCnt"})
-    public StockEntity(String name, BigDecimal stockCnt, BigDecimal targetCnt) {
-        this.name = name;
-        this.stockCnt = stockCnt;
-        this.targetCnt = targetCnt;
+    public void addStockCnt(BigDecimal stockCnt) {
+        this.stockCnt = this.stockCnt.add(stockCnt);
     }
+
+    public void subtractStockCnt(BigDecimal stockCnt) {
+        this.stockCnt = this.stockCnt.subtract(stockCnt);
+    }
+
 }
