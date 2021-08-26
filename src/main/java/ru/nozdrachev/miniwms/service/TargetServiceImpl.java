@@ -32,6 +32,7 @@ public class TargetServiceImpl implements TargetService {
                         new StockEntity()
                                 .setName(name)
                                 .setTargetCnt(targetCnt)
+                                .setStockCnt(BigDecimal.valueOf(0))
                 );
             } else {
                 StockEntity stock = entityOpt.get();
