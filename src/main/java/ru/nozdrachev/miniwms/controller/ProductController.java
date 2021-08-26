@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nozdrachev.miniwms.dto.StockDTO;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.service.IncomeService;
 import ru.nozdrachev.miniwms.service.OutcomeService;
@@ -44,8 +45,8 @@ public class ProductController {
     }
 
     @GetMapping("/stockBalances")
-    public Map<String,BigDecimal> getStockBalances() {
-        return null;
+    public List<StockDTO> getStockBalances() {
+        return List.of(new StockDTO("apple",BigDecimal.valueOf(3),BigDecimal.valueOf(10)));
     }
 
     @GetMapping("/calcShortage")
