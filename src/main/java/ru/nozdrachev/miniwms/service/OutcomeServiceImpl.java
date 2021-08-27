@@ -2,10 +2,10 @@ package ru.nozdrachev.miniwms.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nozdrachev.miniwms.dto.PairNumbers;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @Service
@@ -20,27 +20,30 @@ public class OutcomeServiceImpl implements OutcomeService {
 
     @Transactional
     @Override
-    public void doOutcome(Map<String, BigDecimal> out) {
+    public void doOutcome(Map<String, PairNumbers> out) {
 
-        for (Map.Entry<String, BigDecimal> e : out.entrySet()) {
+        for (Map.Entry<String, PairNumbers> e : out.entrySet()) {
 
             String name = e.getKey();
-            BigDecimal cnt = e.getValue();
+            PairNumbers cnt = e.getValue();
 
             StockEntity stockEntity = stockRepo.findByName(name)
                     .orElseThrow(() -> new RuntimeException("Товар с наименованием " + name + " не найден"));
 
+            if (cnt.getFirst() == stockEntity.getStockCnt()) {
+                if (cnt.getSecond().compareTo(stockEntity.getStockCnt()) < 0) {
+                    stockEntity.subtractStockCnt(cnt.getSecond());
 
-            if (cnt.compareTo(stockEntity.getStockCnt()) < 0) {
-                stockEntity.subtractStockCnt(cnt);
+                    stockRepo.save(stockEntity);
+                } else if (cnt.getSecond().compareTo(stockEntity.getStockCnt()) == 0) {
+                    stockRepo.delete(stockEntity);
 
-                stockRepo.save(stockEntity);
-            } else if (cnt.compareTo(stockEntity.getStockCnt()) == 0) {
-                stockRepo.delete(stockEntity);
+                } else {
+                    throw new RuntimeException("На складе нет необходимого количества " + name);
+                }
             } else {
-                throw new RuntimeException("На складе нет необходимого количества " + name);
+                throw new RuntimeException("Неверно задано текущее значение");
             }
-
         }
     }
 }

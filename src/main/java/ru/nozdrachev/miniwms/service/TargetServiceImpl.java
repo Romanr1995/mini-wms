@@ -2,6 +2,7 @@ package ru.nozdrachev.miniwms.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nozdrachev.miniwms.dto.PairNumbers;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
@@ -20,25 +21,29 @@ public class TargetServiceImpl implements TargetService {
 
     @Transactional
     @Override
-    public void doTarget(Map<String, BigDecimal> inTarget) {
+    public void doTarget(Map<String, PairNumbers> inTarget) {
 
-        for (Map.Entry<String, BigDecimal> e : inTarget.entrySet()) {
+        for (Map.Entry<String, PairNumbers> e : inTarget.entrySet()) {
             String name = e.getKey();
-            BigDecimal targetCnt = e.getValue();
+            PairNumbers targetCnt = e.getValue();
 
             Optional<StockEntity> entityOpt = stockRepo.findByName(name);
-            if (entityOpt.isEmpty()) {
-                stockRepo.save(
-                        new StockEntity()
-                                .setName(name)
-                                .setTargetCnt(targetCnt)
-                                .setStockCnt(BigDecimal.valueOf(0))
-                );
-            } else {
-                StockEntity stock = entityOpt.get();
-                stock.setTargetCnt(targetCnt);
+            if (targetCnt.getFirst() == entityOpt.get().getTargetCnt()) {
+                if (entityOpt.isEmpty()) {
+                    stockRepo.save(
+                            new StockEntity()
+                                    .setName(name)
+                                    .setTargetCnt(targetCnt.getSecond())
+                                    .setStockCnt(BigDecimal.valueOf(0))
+                    );
+                } else {
+                    StockEntity stock = entityOpt.get();
+                    stock.setTargetCnt(targetCnt.getSecond());
 
-                stockRepo.save(stock);
+                    stockRepo.save(stock);
+                }
+            } else {
+                throw new RuntimeException("Неверно задано текущее значение");
             }
         }
     }
