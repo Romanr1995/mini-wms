@@ -6,7 +6,8 @@ import ru.nozdrachev.miniwms.service.StockBalances;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//toDo исправить в следующей версии
+@Deprecated
 @Service
 public class DtoBalancesImpl implements DtoBalances{
 
