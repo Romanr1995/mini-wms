@@ -1,11 +1,10 @@
 package ru.nozdrachev.miniwms.service;
 
-import ru.nozdrachev.miniwms.dto.PairNumbers;
-
+import java.math.BigDecimal;
 import java.util.Map;
 
 
 public interface IncomeService {
 
-    void doIncome(Map<String, PairNumbers> in);
+    void doIncome(Map<String, BigDecimal> in);
 }

@@ -20,8 +20,8 @@ public class DtoBalancesImpl implements DtoBalances{
     public List<StockDTO> getStockDTO() {
         List<StockDTO> stockDTOS = new ArrayList<>();
 
-        for (StockEntity l: stockBalances.getStock()) {
-            stockDTOS.add(new StockDTO(l.getName(),l.getStockCnt(),l.getTargetCnt()));
+        for (StockEntity se: stockBalances.getStock()) {
+            stockDTOS.add(new StockDTO(se.getName(),se.getStockCnt(),se.getTargetCnt()));
         }
         return stockDTOS;
     }

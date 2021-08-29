@@ -1,10 +1,9 @@
 package ru.nozdrachev.miniwms.service;
 
-import ru.nozdrachev.miniwms.dto.PairNumbers;
-
+import java.math.BigDecimal;
 import java.util.Map;
 
 public interface OutcomeService {
 
-    void doOutcome(Map<String, PairNumbers> out);
+    void doOutcome(Map<String, BigDecimal> out);
 }

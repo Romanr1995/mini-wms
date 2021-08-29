@@ -26,24 +26,37 @@ public class TargetServiceImpl implements TargetService {
         for (Map.Entry<String, PairNumbers> e : inTarget.entrySet()) {
             String name = e.getKey();
             PairNumbers targetCnt = e.getValue();
+            BigDecimal expectedTargetCnt = targetCnt.getFirst();
+            BigDecimal newTargetCnt = targetCnt.getSecond();
 
             Optional<StockEntity> entityOpt = stockRepo.findByName(name);
-            if (targetCnt.getFirst() == entityOpt.get().getTargetCnt()) {
-                if (entityOpt.isEmpty()) {
+
+            if (entityOpt.isEmpty()) {
+
+                if (expectedTargetCnt.equals(BigDecimal.ZERO)) {
                     stockRepo.save(
                             new StockEntity()
                                     .setName(name)
-                                    .setTargetCnt(targetCnt.getSecond())
+                                    .setTargetCnt(newTargetCnt)
                                     .setStockCnt(BigDecimal.valueOf(0))
                     );
                 } else {
-                    StockEntity stock = entityOpt.get();
-                    stock.setTargetCnt(targetCnt.getSecond());
-
-                    stockRepo.save(stock);
+                    throw new RuntimeException("Значение целевого количества для " + name +
+                            " ожидалось 0,но получено " + expectedTargetCnt);
                 }
             } else {
-                throw new RuntimeException("Неверно задано текущее значение");
+                StockEntity stock = entityOpt.get();
+                BigDecimal stockTargetCnt = stock.getTargetCnt();
+
+                if (expectedTargetCnt.equals(stockTargetCnt) || stockTargetCnt.equals(null)) {
+
+                    stock.setTargetCnt(newTargetCnt);
+
+                    stockRepo.save(stock);
+                } else {
+                    throw new RuntimeException("Значение целевого количества для " + name +
+                            " ожидалось " + stock.getTargetCnt() + ",а получено " + expectedTargetCnt);
+                }
             }
         }
     }

@@ -4,10 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
-import ru.nozdrachev.miniwms.service.StockBalances;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -24,12 +22,11 @@ public class StockBalancesImpl implements StockBalances {
     public List<StockEntity> getStock() {
         List<StockEntity> listStock = new ArrayList<>();
 
-        Iterator<StockEntity> stockEntityIterator = stockRepo.findAll().iterator();
-        while (stockEntityIterator.hasNext()) {
-            StockEntity stockEntity = stockRepo.findAll().iterator().next();
-
-            listStock.add(stockEntity);
+        Iterable<StockEntity> all = stockRepo.findAll();
+        for (StockEntity s : all) {
+            listStock.add(s);
         }
+
         return listStock;
     }
 }

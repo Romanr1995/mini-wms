@@ -3,9 +3,9 @@ package ru.nozdrachev.miniwms.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 
-@AllArgsConstructor
 @Getter
 public class StockDTO {
 
@@ -15,4 +15,10 @@ public class StockDTO {
 
     private final BigDecimal target;
 
+    @ConstructorProperties({"name","cnt","target"})
+    public StockDTO(String name, BigDecimal cnt, BigDecimal target) {
+        this.name = name;
+        this.cnt = cnt;
+        this.target = target;
+    }
 }
