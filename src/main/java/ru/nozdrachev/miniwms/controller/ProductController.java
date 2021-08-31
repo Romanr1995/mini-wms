@@ -4,18 +4,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nozdrachev.miniwms.dto.DtoBalances;
 import ru.nozdrachev.miniwms.dto.PairNumbers;
 import ru.nozdrachev.miniwms.dto.StockDTO;
-import ru.nozdrachev.miniwms.service.CalcShortageService;
-import ru.nozdrachev.miniwms.service.IncomeService;
-import ru.nozdrachev.miniwms.service.OutcomeService;
-import ru.nozdrachev.miniwms.service.TargetService;
+import ru.nozdrachev.miniwms.service.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -23,13 +18,13 @@ public class ProductController {
     private final IncomeService incomeService;
     private final OutcomeService outcomeService;
     private final TargetService targetService;
-    private final DtoBalances dtoBalances;
+    private final StockDTOBalances dtoBalances;
     private final CalcShortageService calcShortageService;
 
     public ProductController(IncomeService incomeService,
                              OutcomeService outcomeService,
                              TargetService targetService,
-                             DtoBalances dtoBalances,
+                             StockDTOBalances dtoBalances,
                              CalcShortageService calcShortageService) {
         this.incomeService = incomeService;
         this.outcomeService = outcomeService;
@@ -49,17 +44,17 @@ public class ProductController {
     }
 
     @PostMapping("/setTarget")
-    public void target(@RequestBody Map<String, PairNumbers> product) {
+    public void setTarget(@RequestBody Map<String, PairNumbers> product) {
         targetService.doTarget(product);
     }
 
     @GetMapping("/stockBalances")
-    public List<StockDTO> getStockBalances() {
-        return dtoBalances.getStockDTO();
+    public List<StockDTO> stockBalances() {
+        return dtoBalances.stockBalances();
     }
 
     @GetMapping("/calcShortage")
-    public Map<String, BigDecimal> shortage() {
+    public Map<String, BigDecimal> calcShortage() {
 
         return calcShortageService.calcShortage();
     }
