@@ -119,18 +119,9 @@ class MiniWmsApplicationTests {
         Map<String, BigDecimal> calc = mapper.readValue(result, new TypeReference<Map<String, BigDecimal>>() {
         });
 
-        int cnt = 0;
-
-        for (Map.Entry<String, BigDecimal> m : calc.entrySet()) {
-
-            if (m.getKey().equals("apple")) {
-                assertEquals(calc.get("apple"), new BigDecimal("200"));
-                cnt++;
-            }
-
-            assertEquals(1, cnt);
-        }
+        assertEquals(calc.get("apple"), new BigDecimal("200.00"));
 
     }
+
 
 }
