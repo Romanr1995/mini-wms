@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class MiniWmsApplication {
-
 	public static void main(String[] args) {
 //		SpringApplication.run(MiniWmsApplication.class, args);
 
@@ -19,5 +18,4 @@ public class MiniWmsApplication {
 		
 		System.out.println(collect);
 	}
-
 }

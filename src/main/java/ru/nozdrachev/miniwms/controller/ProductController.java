@@ -55,7 +55,6 @@ public class ProductController {
 
     @GetMapping("/calcShortage")
     public Map<String, BigDecimal> calcShortage() {
-
         return calcShortageService.calcShortage();
     }
 
