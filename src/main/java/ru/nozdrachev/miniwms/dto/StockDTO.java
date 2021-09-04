@@ -1,10 +1,8 @@
 package ru.nozdrachev.miniwms.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
+import lombok.Getter;
 
 @Getter
 public class StockDTO {
