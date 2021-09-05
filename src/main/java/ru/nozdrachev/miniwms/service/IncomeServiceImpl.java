@@ -10,18 +10,17 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class IncomeSericeImpl implements IncomeService {
+public class IncomeServiceImpl implements IncomeService {
 
     private final StockRepo stockRepo;
 
-    public IncomeSericeImpl(StockRepo stockRepo) {
+    public IncomeServiceImpl(StockRepo stockRepo) {
         this.stockRepo = stockRepo;
     }
 
     @Transactional
     @Override
     public void doIncome(Map<String, BigDecimal> in) {
-
         for (Map.Entry<String, BigDecimal> e : in.entrySet()) {
             String name = e.getKey();
             BigDecimal cnt = e.getValue();

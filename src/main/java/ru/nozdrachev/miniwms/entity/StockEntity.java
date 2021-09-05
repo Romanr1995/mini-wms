@@ -1,11 +1,14 @@
 package ru.nozdrachev.miniwms.entity;
 
+import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "STOCK_ENTITY")
@@ -33,5 +36,4 @@ public class StockEntity {
     public void subtractStockCnt(BigDecimal stockCnt) {
         this.stockCnt = this.stockCnt.subtract(stockCnt);
     }
-
 }
