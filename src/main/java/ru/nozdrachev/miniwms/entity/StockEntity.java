@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
 
 @Entity
 @Table(name = "STOCK_ENTITY")
@@ -28,6 +29,8 @@ public class StockEntity {
     private BigDecimal stockCnt;
 
     private BigDecimal targetCnt;
+
+    private UnitOfMeasurement base;
 
     public void addStockCnt(BigDecimal stockCnt) {
         this.stockCnt = this.stockCnt.add(stockCnt);
