@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nozdrachev.miniwms.dto.PairCountAndUnitName;
 import ru.nozdrachev.miniwms.dto.PairNumbers;
 import ru.nozdrachev.miniwms.dto.StockDTO;
 import ru.nozdrachev.miniwms.service.*;
@@ -41,6 +42,16 @@ public class ProductController {
     @PostMapping("/outcome")
     public void outcome(@RequestBody Map<String, BigDecimal> product) {
         outcomeService.doOutcome(product);
+    }
+
+    @PostMapping("/income")
+    public void incomeV2(@RequestBody Map<String, PairCountAndUnitName> product) {
+        incomeService.doIncomeV2(product);
+    }
+
+    @PostMapping("/outcome")
+    public void outcomeV2(@RequestBody Map<String, PairCountAndUnitName> product) {
+        outcomeService.doOutcomeV2(product);
     }
 
     @PostMapping("/setTarget")
