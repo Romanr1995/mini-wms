@@ -33,7 +33,7 @@ public class OutcomeServiceImpl implements OutcomeService {
             String name = e.getKey();
             BigDecimal cnt = e.getValue();
 
-            if (cnt.equals(new BigDecimal(0)) || cnt.compareTo(new BigDecimal(0)) <= 0) {
+            if (cnt.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new RuntimeException("Недопустимое значение.Значение должно быть больше 0");
             }
 

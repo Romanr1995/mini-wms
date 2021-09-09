@@ -73,10 +73,9 @@ public class OutcomeServiceImplTest {
     void проверитьСлучайКогдаБеретсяКоличествоТовараРавноеОстатку() {
         service.doOutcome(Map.of(EXISTENT, SUBTRACT_CNT3));
 
-        ArgumentCaptor<StockEntity> captor = ArgumentCaptor.forClass(StockEntity.class);
-        verify(stockRepoMock).delete(captor.capture());
+        verify(stockRepoMock).delete(any());
 
-        verifyNoMoreInteractions(stockRepoMock);
+        verify(stockRepoMock, times(0)).save(any());
     }
 
     @Test

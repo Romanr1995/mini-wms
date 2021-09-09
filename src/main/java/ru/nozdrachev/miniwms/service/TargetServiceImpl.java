@@ -48,7 +48,7 @@ public class TargetServiceImpl implements TargetService {
                 StockEntity stock = entityOpt.get();
                 BigDecimal stockTargetCnt = stock.getTargetCnt();
 
-                if (expectedTargetCnt.equals(stockTargetCnt) || stockTargetCnt.equals(null)) {
+                if (expectedTargetCnt.equals(stockTargetCnt) || stockTargetCnt == null) {
 
                     stock.setTargetCnt(newTargetCnt);
 
