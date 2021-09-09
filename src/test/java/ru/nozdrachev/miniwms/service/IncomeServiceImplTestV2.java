@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import ru.nozdrachev.miniwms.dto.PairCountAndUnitName;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
@@ -26,15 +27,18 @@ public class IncomeServiceImplTestV2 {
     /** Название отсутствующего товара. */
     static final String NON_EXISTENT = "Non-Existent";
 
-    static BigDecimal ADD_CNT = new BigDecimal(5);
+    static final BigDecimal ADD_CNT = new BigDecimal(5);
+    static final PairCountAndUnitName countAndUnit = new PairCountAndUnitName(ADD_CNT,"BOX");
 
     IncomeServiceImpl service;
 
     StockRepo stockRepoMock;
+    UnitConversionService unitConversionService;
 
     @BeforeEach
     void setup() {
         stockRepoMock = mock(StockRepo.class);
+        unitConversionService = mock(UnitConversionService.class);
 
         when(stockRepoMock.findByName(EXISTENT)).thenReturn(
             Optional.of(
@@ -45,7 +49,7 @@ public class IncomeServiceImplTestV2 {
 
         when(stockRepoMock.findByName(NON_EXISTENT)).thenReturn(Optional.empty());
 
-        service = new IncomeServiceImpl(stockRepoMock);
+        service = new IncomeServiceImpl(stockRepoMock,unitConversionService);
     }
 
     /**

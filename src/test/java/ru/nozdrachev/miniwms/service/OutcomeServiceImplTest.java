@@ -32,9 +32,12 @@ public class OutcomeServiceImplTest {
 
     StockRepo stockRepoMock;
 
+    UnitConversionService unitConversionService;
+
     @BeforeEach
     void setup() {
         stockRepoMock = mock(StockRepo.class);
+        unitConversionService = mock(UnitConversionService.class);
 
         when(stockRepoMock.findByName(EXISTENT)).thenReturn(
                 Optional.of(
@@ -45,7 +48,7 @@ public class OutcomeServiceImplTest {
 
         when(stockRepoMock.findByName(NON_EXISTENT)).thenReturn(Optional.empty());
 
-        service = new OutcomeServiceImpl(stockRepoMock);
+        service = new OutcomeServiceImpl(stockRepoMock,unitConversionService);
     }
 
     @Test

@@ -20,12 +20,14 @@ class IncomeServiceImplTest {
 
     IncomeServiceImpl service;
     StockRepo stockRepoMock;
+    UnitConversionService unitConversionService;
 
     @BeforeEach
     void setup() {
         stockRepoMock = mock(StockRepo.class);
+        unitConversionService = mock(UnitConversionService.class);
 
-        service = new IncomeServiceImpl(stockRepoMock);
+        service = new IncomeServiceImpl(stockRepoMock,unitConversionService);
     }
 
     @Test
