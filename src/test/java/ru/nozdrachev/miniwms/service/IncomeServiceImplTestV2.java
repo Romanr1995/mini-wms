@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import ru.nozdrachev.miniwms.dto.PairCountAndUnitName;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
@@ -28,7 +27,6 @@ public class IncomeServiceImplTestV2 {
     static final String NON_EXISTENT = "Non-Existent";
 
     static final BigDecimal ADD_CNT = new BigDecimal(5);
-    static final PairCountAndUnitName countAndUnit = new PairCountAndUnitName(ADD_CNT,"BOX");
 
     IncomeServiceImpl service;
 

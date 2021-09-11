@@ -2,11 +2,6 @@ package ru.nozdrachev.miniwms;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +11,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
 import ru.nozdrachev.miniwms.dto.StockDTO;
 import ru.nozdrachev.miniwms.entity.StockEntity;
+import ru.nozdrachev.miniwms.entity.UnitConversionEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
+import ru.nozdrachev.miniwms.repo.UnitConversionRepo;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,6 +36,9 @@ class MiniWmsApplicationTests {
     @Autowired
     StockRepo stockRepo;
 
+    @Autowired
+    UnitConversionRepo unitConversionRepo;
+
     ObjectMapper mapper = new ObjectMapper();
 
 
@@ -41,9 +46,14 @@ class MiniWmsApplicationTests {
     @Transactional
     void setup() {
         stockRepo.save(new StockEntity().setName("apple").setStockCnt(new BigDecimal(100))
-                .setTargetCnt(new BigDecimal(300)));
+                .setTargetCnt(new BigDecimal(300)).setBase(UnitOfMeasurement.KILOGRAM));
         stockRepo.save(new StockEntity().setName("banana").setStockCnt(new BigDecimal(500))
-                .setTargetCnt(new BigDecimal(500)));
+                .setTargetCnt(new BigDecimal(500)).setBase(UnitOfMeasurement.KILOGRAM));
+
+        unitConversionRepo.save(new UnitConversionEntity().setProductName("apple")
+                .setAltUnit(UnitOfMeasurement.BOX).setCoeff(new BigDecimal(1.5)));
+        unitConversionRepo.save(new UnitConversionEntity().setProductName("banana")
+                .setAltUnit(UnitOfMeasurement.BAG).setCoeff(new BigDecimal(1.1)));
     }
 
 
@@ -80,6 +90,40 @@ class MiniWmsApplicationTests {
 
         mockMvc.perform(
                 post("/outcome")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void givenJson_andIncomeRequestSuccessfulV2() throws Exception {
+        String body = """
+                [
+                {"name": "apple","count": 1.0,"unitName": "BOX"},
+                {"name": "banana","count": 3.5,"unitName": "BAG"}
+                ]
+                """;
+
+        mockMvc.perform(
+                post("/incomeV2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void givenJson_andOutcomeRequestSuccessfulV2() throws Exception {
+        String body = """
+                [
+                {"name": "apple","count": 1.5,"unitName": "BOX"},
+                {"name": "banana","count": 2.0,"unitName": "BAG"}
+                ]
+                """;
+
+        mockMvc.perform(
+                post("/outcomeV2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         )

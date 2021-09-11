@@ -21,12 +21,12 @@ public class UnitConversionEntity {
 
     private String productName;
 
-    private UnitOfMeasurement alternative;
+    private UnitOfMeasurement altUnit;
 
     /**
      * Коэффициент coeff используется для перевода из базовой единицы измерения в альтернативную и наоборот.
-     * base -> alternative: alt_cnt = base_cnt*coeff
-     * alternative -> base: base_cnt = alt_cnt/coeff
+     * base -> alternative: alt_cnt = base_cnt/coeff
+     * alternative -> base: base_cnt = alt_cnt*coeff
      */
     private BigDecimal coeff;
 

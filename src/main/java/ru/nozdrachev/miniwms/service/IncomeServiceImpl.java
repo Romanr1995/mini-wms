@@ -3,11 +3,12 @@ package ru.nozdrachev.miniwms.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
-import ru.nozdrachev.miniwms.dto.PairCountAndUnitName;
+import ru.nozdrachev.miniwms.dto.RequestIncomeAndOutcome;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,22 +54,20 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional
     @Override
-    public void doIncomeV2(Map<String, PairCountAndUnitName> in) {
-        for (Map.Entry<String, PairCountAndUnitName> e : in.entrySet()) {
-            String name = e.getKey();
-            PairCountAndUnitName cntAndUnit = e.getValue();
+    public void doIncomeV2(List<RequestIncomeAndOutcome> in) {
+        for (RequestIncomeAndOutcome req : in) {
+            String name = req.getName();
 
-            String unitName = cntAndUnit.getUnitName();
-            BigDecimal count = cntAndUnit.getCount();
+            BigDecimal count = req.getCount();
 
-            UnitOfMeasurement unitOfMeasurement = UnitOfMeasurement.valueOf(unitName);
+            UnitOfMeasurement unitOfMeasurement = req.getUnitName();
             BigDecimal baseCount = unitConversionService.calculateBaseCnt(name, count, unitOfMeasurement);
 
             if (count.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new RuntimeException("Недопустимое значение.Значение должно быть больше 0");
             }
 
-            Optional<StockEntity> entityOpt = stockRepo.findByName(unitName);
+            Optional<StockEntity> entityOpt = stockRepo.findByName(unitOfMeasurement.toString());
 
             if (entityOpt.isPresent()) {
 

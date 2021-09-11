@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static ru.nozdrachev.miniwms.testutils.AssertUtils.assertEquals;
 
-class IncomeServiceImplTest {
+class IncomeServiceImplTestV1 {
 
     IncomeServiceImpl service;
     StockRepo stockRepoMock;
