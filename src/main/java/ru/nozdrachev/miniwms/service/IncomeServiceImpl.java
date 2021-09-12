@@ -25,35 +25,6 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional
     @Override
-    @Deprecated
-    public void doIncome(Map<String, BigDecimal> in) {
-        for (Map.Entry<String, BigDecimal> e : in.entrySet()) {
-            String name = e.getKey();
-            BigDecimal cnt = e.getValue();
-
-            if (cnt.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new RuntimeException("Недопустимое значение.Значение должно быть больше 0");
-            }
-
-            Optional<StockEntity> entityOpt = stockRepo.findByName(name);
-            if (entityOpt.isPresent()) {
-
-                StockEntity stockEntity = entityOpt.get();
-                stockEntity.addStockCnt(cnt);
-
-                stockRepo.save(stockEntity);
-            } else {
-                stockRepo.save(
-                        new StockEntity()
-                                .setName(name)
-                                .setStockCnt(cnt)
-                );
-            }
-        }
-    }
-
-    @Transactional
-    @Override
     public void doIncomeV2(List<ProductRecordDTO> in) {
         for (ProductRecordDTO req : in) {
             String name = req.getName();

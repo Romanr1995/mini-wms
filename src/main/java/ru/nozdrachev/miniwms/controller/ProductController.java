@@ -34,16 +34,6 @@ public class ProductController {
         this.calcShortageService = calcShortageService;
     }
 
-    @PostMapping("/income")
-    public void income(@RequestBody Map<String, BigDecimal> product) {
-        incomeService.doIncome(product);
-    }
-
-    @PostMapping("/outcome")
-    public void outcome(@RequestBody Map<String, BigDecimal> product) {
-        outcomeService.doOutcome(product);
-    }
-
     @PostMapping("/incomeV2")
     public void incomeV2(@RequestBody List<ProductRecordDTO> product) {
         incomeService.doIncomeV2(product);

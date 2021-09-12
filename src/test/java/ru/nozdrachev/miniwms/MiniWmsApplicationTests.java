@@ -66,39 +66,6 @@ class MiniWmsApplicationTests {
     }
 
     @Test
-    void givenJson_andIncomeRequestSuccessful() throws Exception {
-        String body = """
-                {
-                "apple": 1.5,
-                "banana": 2.5
-                }
-                """;
-        mockMvc.perform(
-                post("/income")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body)
-        )
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void givenJson_andOutcomeRequestSuccessful() throws Exception {
-        String body = """
-                {
-                "apple": 0.5,
-                "banana": 2.5
-                }
-                """;
-
-        mockMvc.perform(
-                post("/outcome")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body)
-        )
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void givenJson_andIncomeRequestSuccessfulV2() throws Exception {
         String body = """
                 [

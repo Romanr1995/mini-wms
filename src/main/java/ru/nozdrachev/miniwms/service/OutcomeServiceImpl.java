@@ -26,36 +26,6 @@ public class OutcomeServiceImpl implements OutcomeService {
 
     @Transactional
     @Override
-    @Deprecated
-    public void doOutcome(Map<String, BigDecimal> out) {
-
-        for (Map.Entry<String, BigDecimal> e : out.entrySet()) {
-
-            String name = e.getKey();
-            BigDecimal cnt = e.getValue();
-
-            if (cnt.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new RuntimeException("Недопустимое значение.Значение должно быть больше 0");
-            }
-
-            StockEntity stockEntity = stockRepo.findByName(name)
-                    .orElseThrow(() -> new RuntimeException("Товар с наименованием " + name + " не найден"));
-
-
-            if (cnt.compareTo(stockEntity.getStockCnt()) < 0) {
-                stockEntity.subtractStockCnt(cnt);
-
-                stockRepo.save(stockEntity);
-            } else if (cnt.compareTo(stockEntity.getStockCnt()) == 0) {
-                stockRepo.delete(stockEntity);
-            } else {
-                throw new RuntimeException("На складе нет необходимого количества " + name);
-            }
-        }
-    }
-
-    @Transactional
-    @Override
     public void doOutcomeV2(List<ProductRecordDTO> out) {
         for (ProductRecordDTO req : out) {
             String name = req.getName();
