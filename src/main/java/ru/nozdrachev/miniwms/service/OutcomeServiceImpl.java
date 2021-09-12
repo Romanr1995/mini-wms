@@ -3,7 +3,7 @@ package ru.nozdrachev.miniwms.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
-import ru.nozdrachev.miniwms.dto.RequestIncomeAndOutcome;
+import ru.nozdrachev.miniwms.dto.ProductRecordDTO;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
@@ -56,8 +56,8 @@ public class OutcomeServiceImpl implements OutcomeService {
 
     @Transactional
     @Override
-    public void doOutcomeV2(List<RequestIncomeAndOutcome> out) {
-        for (RequestIncomeAndOutcome req : out) {
+    public void doOutcomeV2(List<ProductRecordDTO> out) {
+        for (ProductRecordDTO req : out) {
             String name = req.getName();
 
             BigDecimal count = req.getCount();

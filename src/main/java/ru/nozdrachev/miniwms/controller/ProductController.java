@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nozdrachev.miniwms.dto.PairNumbers;
-import ru.nozdrachev.miniwms.dto.RequestIncomeAndOutcome;
+import ru.nozdrachev.miniwms.dto.ProductRecordDTO;
 import ru.nozdrachev.miniwms.dto.StockDTO;
 import ru.nozdrachev.miniwms.service.*;
 
@@ -45,12 +45,12 @@ public class ProductController {
     }
 
     @PostMapping("/incomeV2")
-    public void incomeV2(@RequestBody List<RequestIncomeAndOutcome> product) {
+    public void incomeV2(@RequestBody List<ProductRecordDTO> product) {
         incomeService.doIncomeV2(product);
     }
 
     @PostMapping("/outcomeV2")
-    public void outcomeV2(@RequestBody List<RequestIncomeAndOutcome> product) {
+    public void outcomeV2(@RequestBody List<ProductRecordDTO> product) {
         outcomeService.doOutcomeV2(product);
     }
 
