@@ -1,33 +1,36 @@
 package ru.nozdrachev.miniwms;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
 import ru.nozdrachev.miniwms.entity.UnitConversionEntity;
 import ru.nozdrachev.miniwms.repo.UnitConversionRepo;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 
+@Profile("initapplication")
 @Component
 public class InitApplication implements CommandLineRunner {
 
-    private final ProductRepo productRepo;
     private final UnitConversionRepo unitConversionRepo;
 
-    public InitApplication(ProductRepo productRepo, UnitConversionRepo unitConversionRepo) {
-        this.productRepo = productRepo;
+    public InitApplication(UnitConversionRepo unitConversionRepo) {
         this.unitConversionRepo = unitConversionRepo;
     }
 
-    @Override public void run(String... args) throws Exception {
+    @PostConstruct
+    public void init() {
+        System.out.println("Init");
+    }
 
-        productRepo.save(
-                new ProductEntity().setName("apple").setBase(UnitOfMeasurement.KILOGRAM)
-        );
+    @Override
+    public void run(String... args) throws Exception {
 
         unitConversionRepo.save(
                 new UnitConversionEntity().setProductName("apple").setAltUnit(UnitOfMeasurement.BOX)
-                .setCoeff(new BigDecimal(1.5))
+                        .setCoeff(new BigDecimal(1.5))
         );
     }
 }
