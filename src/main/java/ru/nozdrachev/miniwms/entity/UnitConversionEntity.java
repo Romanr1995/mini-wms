@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "UNIT_CONVERSION_ENTITY")
+@Table(name = "UNIT_CONVERSION_ENTITY",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"product", "altUnit"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class UnitConversionEntity {
     @GeneratedValue
     private Long id;
 
-    private String productName;
+    private ProductEntity product;
 
     private UnitOfMeasurement altUnit;
 

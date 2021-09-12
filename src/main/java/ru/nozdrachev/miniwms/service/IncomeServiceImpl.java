@@ -47,6 +47,7 @@ public class IncomeServiceImpl implements IncomeService {
 
                 stockRepo.save(stockEntity);
             } else {
+
                 stockRepo.save(
                         new StockEntity()
                                 .setName(name)
