@@ -8,9 +8,7 @@ import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
 import ru.nozdrachev.miniwms.dto.ProductRecordDTO;
 import ru.nozdrachev.miniwms.entity.ProductEntity;
 import ru.nozdrachev.miniwms.entity.StockEntity;
-import ru.nozdrachev.miniwms.entity.UnitConversionEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
-import ru.nozdrachev.miniwms.repo.UnitConversionRepo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,11 +25,9 @@ public class OutcomeServiceImplTest {
 
     static final String NON_EXISTENT = "Non-Existent";
 
-    static final BigDecimal SUBTRACT_CNT1 = new BigDecimal(5);
+    static final BigDecimal CNT_LESS_THAN_EXISTENT = EXISTENT_CNT.divide(BigDecimal.valueOf(2));
 
-    static final BigDecimal SUBTRACT_CNT2 = new BigDecimal(15);
-
-    static final BigDecimal SUBTRACT_CNT3 = new BigDecimal(10);
+    static final BigDecimal CNT_BIGGER_THAN_EXISTENT = EXISTENT_CNT.add(BigDecimal.valueOf(2));
 
     static final UnitOfMeasurement UNIT = UnitOfMeasurement.BOX;
 
@@ -48,13 +44,10 @@ public class OutcomeServiceImplTest {
 
     UnitConversionService unitConversionService;
 
-    UnitConversionRepo unitConversionRepoMock;
-
     @BeforeEach
     void setup() {
         stockRepoMock = mock(StockRepo.class);
         unitConversionService = mock(UnitConversionService.class);
-        unitConversionRepoMock = mock(UnitConversionRepo.class);
 
         when(stockRepoMock.findByProductName(EXISTENT)).thenReturn(
                 Optional.of(
@@ -62,60 +55,53 @@ public class OutcomeServiceImplTest {
                                 .setStockCnt(EXISTENT_CNT)
                 )
         );
-        when(unitConversionRepoMock.findByProductNameAltUnit(EXISTENT, UNIT)).thenReturn(
-                Optional.of(
-                        new UnitConversionEntity()
-                                .setProduct(PRODUCT_ENTITY_EXSISTENT)
-                                .setAltUnit(UNIT)
-                                .setCoeff(new BigDecimal(1.3))
 
-                )
-        );
+        when(stockRepoMock.findByProductName(NON_EXISTENT))
+                .thenReturn(Optional.empty());
 
-        when(stockRepoMock.findByProductName(NON_EXISTENT)).thenReturn(Optional.empty());
-        when(unitConversionRepoMock.findByProductNameAltUnit(NON_EXISTENT, UNIT)).thenReturn(
-                Optional.of(
-                        new UnitConversionEntity()
-                                .setProduct(PRODUCT_ENTITY_NON_EXSISTENT)
-                                .setAltUnit(UNIT)
-                                .setCoeff(new BigDecimal(1.5))
-
-                )
-        );
         service = new OutcomeServiceImpl(stockRepoMock, unitConversionService);
     }
 
     @Test
     void проверитьСлучайКогдаБеретсяКоличествоТовараМеньшеОстатка() {
-        service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, SUBTRACT_CNT1, UNIT)));
+        when(unitConversionService.calculateBaseCnt(any(), any(), any()))
+                .thenReturn(CNT_LESS_THAN_EXISTENT);
+
+        service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, CNT_LESS_THAN_EXISTENT, UNIT)));
 
         ArgumentCaptor<StockEntity> captor = ArgumentCaptor.forClass(StockEntity.class);
         verify(stockRepoMock).save(captor.capture());
 
-        assertEquals(EXISTENT_CNT.subtract(SUBTRACT_CNT1), captor.getValue().getStockCnt());
+        assertEquals(EXISTENT_CNT.subtract(CNT_LESS_THAN_EXISTENT), captor.getValue().getStockCnt());
     }
 
     @Test
     void проверитьСлучайКогдаТоБеретсяКоличествоТовараБольшеОстатка() {
+        when(unitConversionService.calculateBaseCnt(any(), any(), any()))
+                .thenReturn(CNT_BIGGER_THAN_EXISTENT);
+
         Assertions.assertThrows(
                 RuntimeException.class,
-                () -> service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, SUBTRACT_CNT2, UNIT)))
+                () -> service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, CNT_BIGGER_THAN_EXISTENT, UNIT)))
         );
     }
 
     @Test
     void проверитьСлучайКогдаБеретсяКоличествоТовараРавноеОстатку() {
-        Assertions.assertThrows(
-                RuntimeException.class,
-                () -> service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, SUBTRACT_CNT3, UNIT)))
-        );
+        when(unitConversionService.calculateBaseCnt(any(), any(), any()))
+                .thenReturn(EXISTENT_CNT);
+
+        service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, EXISTENT_CNT, UNIT)));
+        verify(stockRepoMock).delete(any());
+
+        verify(stockRepoMock, times(0)).save(any());
     }
 
     @Test
     void проверитьСлучайКогдаЗадаетсяНесуществующееПоле() {
         Assertions.assertThrows(
                 RuntimeException.class,
-                () -> service.doOutcomeV2(List.of(new ProductRecordDTO(NON_EXISTENT, SUBTRACT_CNT1, UNIT)))
+                () -> service.doOutcomeV2(List.of(new ProductRecordDTO(NON_EXISTENT, CNT_LESS_THAN_EXISTENT, UNIT)))
         );
     }
 
