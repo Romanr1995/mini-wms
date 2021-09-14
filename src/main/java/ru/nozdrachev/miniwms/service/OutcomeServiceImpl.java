@@ -9,7 +9,6 @@ import ru.nozdrachev.miniwms.repo.StockRepo;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OutcomeServiceImpl implements OutcomeService {
@@ -39,7 +38,7 @@ public class OutcomeServiceImpl implements OutcomeService {
                 throw new RuntimeException("Недопустимое значение.Значение должно быть больше 0");
             }
 
-            StockEntity stockEntity = stockRepo.findByName(name)
+            StockEntity stockEntity = stockRepo.findByProductName(name)
                     .orElseThrow(() -> new RuntimeException("Товар с наименованием " + name + " не найден"));
 
             if (baseCnt.compareTo(stockEntity.getStockCnt()) < 0) {

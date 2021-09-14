@@ -1,5 +1,6 @@
 package ru.nozdrachev.miniwms.entity;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @Entity
-public class ProductEntity {
+public class ProductEntity implements Serializable {
 
     @Id
     @GeneratedValue

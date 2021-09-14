@@ -24,7 +24,7 @@ public class CalcShortageServiceImpl implements CalcShortageService {
         return stockRepo.getAllWithShortage().stream()
                 .collect(
                         Collectors.toMap(
-                                st -> st.getName(),
+                                st -> st.getProduct().getName(),
                                 st -> st.getTargetCnt().subtract(st.getStockCnt())
                         )
                 );

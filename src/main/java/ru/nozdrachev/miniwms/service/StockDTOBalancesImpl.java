@@ -22,7 +22,7 @@ public class StockDTOBalancesImpl implements StockDTOBalances {
         List<StockDTO> stockDTOS = new ArrayList<>();
 
         stockDTOS = stockBalances.getStock().stream()
-                .map(st -> new StockDTO(st.getName(), st.getStockCnt(), st.getTargetCnt()))
+                .map(st -> new StockDTO(st.getProduct().getName(), st.getStockCnt(), st.getTargetCnt()))
                 .collect(Collectors.toList());
 
         return stockDTOS;

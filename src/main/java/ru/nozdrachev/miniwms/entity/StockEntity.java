@@ -1,5 +1,6 @@
 package ru.nozdrachev.miniwms.entity;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,14 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StockEntity {
+public class StockEntity implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @OneToOne
+    @JoinColumn(unique = true, nullable = false)
     private ProductEntity product;
 
     @Column(nullable = false)

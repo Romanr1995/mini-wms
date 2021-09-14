@@ -1,19 +1,14 @@
 package ru.nozdrachev.miniwms.service;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import ru.nozdrachev.miniwms.entity.StockEntity;
 import ru.nozdrachev.miniwms.repo.StockRepo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 public class IncomeServiceImplTestV2 {
@@ -38,16 +33,16 @@ public class IncomeServiceImplTestV2 {
         stockRepoMock = mock(StockRepo.class);
         unitConversionService = mock(UnitConversionService.class);
 
-        when(stockRepoMock.findByName(EXISTENT)).thenReturn(
+        when(stockRepoMock.findByProductName(EXISTENT)).thenReturn(
             Optional.of(
                 new StockEntity()
                     .setStockCnt(EXISTENT_CNT)
             )
         );
 
-        when(stockRepoMock.findByName(NON_EXISTENT)).thenReturn(Optional.empty());
+        when(stockRepoMock.findByProductName(NON_EXISTENT)).thenReturn(Optional.empty());
 
-        service = new IncomeServiceImpl(stockRepoMock,unitConversionService);
+        service = new IncomeServiceImpl(stockRepoMock, unitConversionService, null/*todo fixme*/);
     }
 
     /**
