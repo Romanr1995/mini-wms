@@ -44,62 +44,45 @@ public class IncomeServiceImplTestV2 {
     static final ProductEntity PRODUCT_ENTITY_NON_EXSISTENT = new ProductEntity()
             .setName(NON_EXISTENT)
             .setBaseUnit(UnitOfMeasurement.KILOGRAM);
+    public static final BigDecimal ADD_BASE_CNT = BigDecimal.valueOf(40);
 
     IncomeServiceImpl service;
 
     StockRepo stockRepoMock;
     UnitConversionService unitConversionService;
     ProductRepo productRepoMock;
-    UnitConversionRepo unitConversionRepoMock;
+
 
     @BeforeEach
     void setup() {
         stockRepoMock = mock(StockRepo.class);
         unitConversionService = mock(UnitConversionService.class);
 
-        unitConversionRepoMock = mock(UnitConversionRepo.class);
+
         productRepoMock = mock(ProductRepo.class);
 
-        when(stockRepoMock.findByProductName(EXISTENT)).thenReturn(
-                Optional.of(
-                        new StockEntity()
-                                .setStockCnt(EXISTENT_CNT)
-                                .setProduct(PRODUCT_ENTITY_EXSISTENT)
-                                .setStockCnt(BigDecimal.valueOf(100))
-                                .setTargetCnt(BigDecimal.valueOf(300))
+        when(stockRepoMock.findByProductName(EXISTENT))
+                .thenReturn(
+                        Optional.of(
+                                new StockEntity()
+                                        .setProduct(PRODUCT_ENTITY_EXSISTENT)
+                                        .setStockCnt(EXISTENT_CNT)
+                                        .setTargetCnt(BigDecimal.valueOf(300))
+                        )
+                );
 
-                )
-        );
-        when(unitConversionRepoMock.findByProductNameAltUnit(EXISTENT, UNIT)).thenReturn(
-                Optional.of(
-                        new UnitConversionEntity()
-                                .setProduct(PRODUCT_ENTITY_EXSISTENT)
-                                .setAltUnit(UNIT)
-                                .setCoeff(new BigDecimal(1.3))
+        when(unitConversionService.calculateBaseCnt(any(), any(), any()))
+                .thenReturn(ADD_BASE_CNT);
 
-                )
-        );
-        when(productRepoMock.findByName(EXISTENT)).thenReturn(
-                Optional.of(PRODUCT_ENTITY_EXSISTENT
-                )
-        );
+        when(productRepoMock.findByName(EXISTENT))
+                .thenReturn(Optional.of(PRODUCT_ENTITY_EXSISTENT));
 
-        when(stockRepoMock.findByProductName(NON_EXISTENT)).thenReturn(Optional.empty());
+        when(productRepoMock.findByName(NON_EXISTENT))
+                .thenReturn(Optional.of(PRODUCT_ENTITY_NON_EXSISTENT));
 
-        when(unitConversionRepoMock.findByProductNameAltUnit(NON_EXISTENT, UNIT)).thenReturn(
-                Optional.of(
-                        new UnitConversionEntity()
-                                .setProduct(PRODUCT_ENTITY_NON_EXSISTENT)
-                                .setAltUnit(UNIT)
-                                .setCoeff(new BigDecimal(1.5))
+        when(stockRepoMock.findByProductName(NON_EXISTENT))
+                .thenReturn(Optional.empty());
 
-                )
-        );
-
-        when(productRepoMock.findByName(EXISTENT)).thenReturn(
-                Optional.of(PRODUCT_ENTITY_NON_EXSISTENT
-                )
-        );
         service = new IncomeServiceImpl(stockRepoMock, unitConversionService, productRepoMock);
     }
 
@@ -115,7 +98,7 @@ public class IncomeServiceImplTestV2 {
         ArgumentCaptor<StockEntity> argCaptor = ArgumentCaptor.forClass(StockEntity.class);
         verify(stockRepoMock).save(argCaptor.capture());
 
-        assertEquals(EXISTENT_CNT.add(ADD_CNT), argCaptor.getValue().getStockCnt());
+        assertEquals(EXISTENT_CNT.add(ADD_BASE_CNT), argCaptor.getValue().getStockCnt());
     }
 
     @Test
@@ -125,7 +108,7 @@ public class IncomeServiceImplTestV2 {
         ArgumentCaptor<StockEntity> argCaptor = ArgumentCaptor.forClass(StockEntity.class);
         verify(stockRepoMock).save(argCaptor.capture());
 
-        assertEquals(ADD_CNT, argCaptor.getValue().getStockCnt());
+        assertEquals(ADD_BASE_CNT, argCaptor.getValue().getStockCnt());
     }
 
     @Test
