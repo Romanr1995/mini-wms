@@ -12,47 +12,22 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class StockPriceImpl implements StockPrice {
+public class StockPriceServiceImpl implements StockPriceService {
 
     private final StockRepo stockRepo;
 
-    public StockPriceImpl(StockRepo stockRepo) {
+    public StockPriceServiceImpl(StockRepo stockRepo) {
         this.stockRepo = stockRepo;
     }
-
-//    @Transactional
-//    @Override
-//    public Map<String, BigDecimal> getPrice(List<String> product) {
-//        Map<String, BigDecimal> mapPrice = new HashMap<>();
-//
-//        Iterable<StockEntity> all = stockRepo.findAll();
-//
-//        for (StockEntity stockEntity : all) {
-//
-//            String name = stockEntity.getProduct().getName();
-//
-//            if (product.contains(name)) {
-//                BigDecimal cnt = stockEntity.getStockCnt();
-//                BigDecimal priceCnt = stockEntity.getProduct().getPrice();
-//
-//                BigDecimal totalPriceProduct = cnt.multiply(priceCnt);
-//
-//                mapPrice.put(name, totalPriceProduct);
-//                product.remove(name);
-//            }
-//        }
-//
-//        for (String s : product) {
-//            mapPrice.put(s, BigDecimal.valueOf(0));
-//        }
-//        return mapPrice;
-//    }
 
     @Transactional
     @Override
     public Map<String, BigDecimal> getPrice(List<String> product) {
         Map<String, BigDecimal> mapPrice = new HashMap<>();
 
+        if (product.isEmpty()) {
+            throw new RuntimeException("Не задано ни одного поля в запросе");
+        }
         for (String s : product) {
             Optional<StockEntity> stockEntityOptional = stockRepo.findByProductName(s);
 

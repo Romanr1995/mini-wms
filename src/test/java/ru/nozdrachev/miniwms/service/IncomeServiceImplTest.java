@@ -20,7 +20,7 @@ import ru.nozdrachev.miniwms.repo.UnitConversionRepo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class IncomeServiceImplTestV2 {
+public class IncomeServiceImplTest {
 
     static final BigDecimal EXISTENT_CNT = new BigDecimal(10);
 

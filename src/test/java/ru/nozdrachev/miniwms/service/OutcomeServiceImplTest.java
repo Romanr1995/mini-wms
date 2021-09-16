@@ -17,9 +17,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class OutcomeServiceImplTestV2 {
+public class OutcomeServiceImplTest {
 
-    static final BigDecimal EXISTENT_CNT = new BigDecimal(10);
+    static final BigDecimal EXISTENT_CNT = BigDecimal.valueOf(10);
 
     static final String EXISTENT = "Existent";
 

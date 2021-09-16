@@ -21,14 +21,14 @@ public class ProductController {
     private final TargetService targetService;
     private final StockDTOBalances dtoBalances;
     private final CalcShortageService calcShortageService;
-    private final StockPrice stockPrice;
+    private final StockPriceService stockPrice;
 
     public ProductController(IncomeService incomeService,
                              OutcomeService outcomeService,
                              TargetService targetService,
                              StockDTOBalances dtoBalances,
                              CalcShortageService calcShortageService,
-                             StockPrice stockPrice) {
+                             StockPriceService stockPrice) {
         this.incomeService = incomeService;
         this.outcomeService = outcomeService;
         this.targetService = targetService;
