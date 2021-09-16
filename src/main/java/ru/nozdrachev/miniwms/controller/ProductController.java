@@ -21,17 +21,20 @@ public class ProductController {
     private final TargetService targetService;
     private final StockDTOBalances dtoBalances;
     private final CalcShortageService calcShortageService;
+    private final StockPrice stockPrice;
 
     public ProductController(IncomeService incomeService,
                              OutcomeService outcomeService,
                              TargetService targetService,
                              StockDTOBalances dtoBalances,
-                             CalcShortageService calcShortageService) {
+                             CalcShortageService calcShortageService,
+                             StockPrice stockPrice) {
         this.incomeService = incomeService;
         this.outcomeService = outcomeService;
         this.targetService = targetService;
         this.dtoBalances = dtoBalances;
         this.calcShortageService = calcShortageService;
+        this.stockPrice = stockPrice;
     }
 
     @PostMapping("/incomeV2")
@@ -57,6 +60,11 @@ public class ProductController {
     @GetMapping("/calcShortage")
     public Map<String, BigDecimal> calcShortage() {
         return calcShortageService.calcShortage();
+    }
+
+    @PostMapping("/stockPrice")
+    public Map<String, BigDecimal> stockPrice(@RequestBody List<String> product) {
+        return stockPrice.getPrice(product);
     }
 
 }
