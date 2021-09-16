@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class OutcomeServiceImplTest {
+public class OutcomeServiceImplTestV2 {
 
     static final BigDecimal EXISTENT_CNT = new BigDecimal(10);
 
@@ -30,13 +30,6 @@ public class OutcomeServiceImplTest {
     static final BigDecimal CNT_BIGGER_THAN_EXISTENT = EXISTENT_CNT.add(BigDecimal.valueOf(2));
 
     static final UnitOfMeasurement UNIT = UnitOfMeasurement.BOX;
-
-    static final ProductEntity PRODUCT_ENTITY_EXSISTENT = new ProductEntity()
-            .setName(EXISTENT)
-            .setBaseUnit(UnitOfMeasurement.KILOGRAM);
-    static final ProductEntity PRODUCT_ENTITY_NON_EXSISTENT = new ProductEntity()
-            .setName(NON_EXISTENT)
-            .setBaseUnit(UnitOfMeasurement.KILOGRAM);
 
     OutcomeServiceImpl service;
 
@@ -127,61 +120,4 @@ public class OutcomeServiceImplTest {
                 () -> service.doOutcomeV2(List.of(new ProductRecordDTO(EXISTENT, BigDecimal.valueOf(0), UNIT)))
         );
     }
-//    @Test
-//    void проверитьСлучайКогдаБеретсяКоличествоТовараМеньшеОстатка() {
-//        service.doOutcome(Map.of(EXISTENT, SUBTRACT_CNT1));
-//
-//        ArgumentCaptor<StockEntity> captor = ArgumentCaptor.forClass(StockEntity.class);
-//        verify(stockRepoMock).save(captor.capture());
-//
-//        assertEquals(EXISTENT_CNT.subtract(SUBTRACT_CNT1), captor.getValue().getStockCnt());
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдаТоБеретсяКоличествоТовараБольшеОстатка() {
-//        Assertions.assertThrows(
-//                RuntimeException.class,
-//                () -> service.doOutcome(Map.of(EXISTENT, SUBTRACT_CNT2))
-//        );
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдаБеретсяКоличествоТовараРавноеОстатку() {
-//        service.doOutcome(Map.of(EXISTENT, SUBTRACT_CNT3));
-//
-//        verify(stockRepoMock).delete(any());
-//
-//        verify(stockRepoMock, times(0)).save(any());
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдаЗадаетсяНесуществующееПоле() {
-//        Assertions.assertThrows(
-//                RuntimeException.class,
-//                () -> service.doOutcome(Map.of(NON_EXISTENT, SUBTRACT_CNT1))
-//        );
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдаПоступаетПустойЗапрос() {
-//        service.doOutcome(Map.of());
-//
-//        verifyNoInteractions(stockRepoMock);
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдаПоступаетОтрицательноеЗначение() {
-//        Assertions.assertThrows(
-//                RuntimeException.class,
-//                () -> service.doOutcome(Map.of(EXISTENT, new BigDecimal(-1)))
-//        );
-//    }
-//
-//    @Test
-//    void проверитьСлучайКогдапоступаетНулевоеЗначение() {
-//        Assertions.assertThrows(
-//                RuntimeException.class,
-//                () -> service.doOutcome(Map.of(EXISTENT, new BigDecimal(0)))
-//        );
-//    }
 }

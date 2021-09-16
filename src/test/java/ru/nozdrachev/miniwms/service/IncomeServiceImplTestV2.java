@@ -141,46 +141,4 @@ public class IncomeServiceImplTestV2 {
                 () -> service.doIncomeV2(List.of(new ProductRecordDTO("milk", new BigDecimal(5), UNIT)))
         );
     }
-//    @Test
-//    void shouldIncreaseStockCntWhenEntityExistent() {
-//        service.doIncome(Map.of(EXISTENT, ADD_CNT));
-//
-//        ArgumentCaptor<StockEntity> argCaptor = ArgumentCaptor.forClass(StockEntity.class);
-//        verify(stockRepoMock).save(argCaptor.capture());
-//
-//        assertEquals(EXISTENT_CNT.add(ADD_CNT), argCaptor.getValue().getStockCnt());
-//    }
-//
-//    @Test
-//    void shouldInsertNewRecordWhenEntityNonExistent() {
-//        service.doIncome(Map.of(NON_EXISTENT, ADD_CNT));
-//
-//        ArgumentCaptor<StockEntity> argCaptor = ArgumentCaptor.forClass(StockEntity.class);
-//        verify(stockRepoMock).save(argCaptor.capture());
-//
-//        assertEquals(ADD_CNT, argCaptor.getValue().getStockCnt());
-//    }
-//
-//    @Test
-//    void shouldNotInteractWithRepoWhenArgIsEmpty() {
-//        service.doIncome(Map.of());
-//
-//        verifyNoInteractions(stockRepoMock);
-//    }
-//
-//    @Test
-//    void shouldThrowExceptionWhenArgContainsNegativeCnt() {
-//        Assertions.assertThrows(
-//            RuntimeException.class,
-//            () -> service.doIncome(Map.of(EXISTENT, new BigDecimal(-1)))
-//        );
-//    }
-//
-//    @Test
-//    void shouldThrowExceptionWhenArgContainsZeroCnt() {
-//        Assertions.assertThrows(
-//            RuntimeException.class,
-//            () -> service.doIncome(Map.of(EXISTENT, new BigDecimal(0)))
-//        );
-//    }
 }
