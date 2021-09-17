@@ -1,6 +1,7 @@
 package ru.nozdrachev.miniwms.entity;
 
 import java.io.Serializable;
+import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class StockEntity implements Serializable {
     @Column(nullable = false)
     private BigDecimal stockCnt;
 
+    @Positive
     private BigDecimal targetCnt;
 
     public void addStockCnt(BigDecimal stockCnt) {

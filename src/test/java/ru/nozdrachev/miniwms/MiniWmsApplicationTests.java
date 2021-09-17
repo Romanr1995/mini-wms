@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -157,6 +158,22 @@ class MiniWmsApplicationTests {
 
         assertEquals(calc.get("apple"), new BigDecimal("200.00"));
 
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNegativeTargetCntSet() throws Exception {
+        String body = """
+            {"banana": {"first":500.00, "second":-100}}
+            """;
+
+        assertThrows(
+            Exception.class,
+            () -> mockMvc.perform(
+                post("/setTarget")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body)
+            )
+        );
     }
 
 }

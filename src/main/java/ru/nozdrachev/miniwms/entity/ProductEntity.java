@@ -1,15 +1,16 @@
 package ru.nozdrachev.miniwms.entity;
 
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
-import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
-
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.math.BigDecimal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PositiveOrZero;
+import lombok.Getter;
+import lombok.Setter;
+import ru.nozdrachev.miniwms.domain.UnitOfMeasurement;
 
 @Setter
 @Getter
@@ -21,16 +22,19 @@ public class ProductEntity implements Serializable {
     private Long id;
 
     @Column(unique = true)
+    @NotEmpty
     private String name;
 
     /**
      * Вес одной базовой единицы в киллограмах.
      */
+    @PositiveOrZero
     private BigDecimal weight;
 
     /**
      * Стоимость одной базовой единицы в рублях.
      */
+    @PositiveOrZero
     private BigDecimal price;
 
     /**

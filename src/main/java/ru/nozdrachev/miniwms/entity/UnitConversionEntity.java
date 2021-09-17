@@ -1,6 +1,7 @@
 package ru.nozdrachev.miniwms.entity;
 
 import java.io.Serializable;
+import javax.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +34,6 @@ public class UnitConversionEntity implements Serializable {
      * base -> alternative: alt_cnt = base_cnt/coeff.
      * alternative -> base: base_cnt = alt_cnt*coeff.
      */
+    @Positive
     private BigDecimal coeff;
 }
